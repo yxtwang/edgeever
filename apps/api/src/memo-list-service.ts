@@ -8,7 +8,7 @@ import {
   getTableSummary,
   type MemoSummary,
 } from "@edgeever/shared";
-import { clampNumber, parseJsonArray } from "./entity-utils";
+import { parseJsonArray } from "./entity-utils";
 import type { DatabaseAdapter } from "./storage-contract";
 
 export type MemoSummaryRow = {
@@ -95,6 +95,10 @@ const normalizeMemoListSort = (value: string | undefined): MemoListSortMode =>
 const normalizeMemoListFilter = (value: string | undefined): MemoListFilterMode =>
   value === "tagged" || value === "untagged" || value === "pinned" ? value : "all";
 
+const clampNumber = (value: number, min: number, max: number) => {
+  if (Number.isNaN(value)) return min;
+  return Math.min(Math.max(value, min), max);
+};
 
 const encodeMemoListCursor = (
   memo: MemoSummaryRow,

@@ -22,7 +22,7 @@ import {
 import { auditStatement } from "./audit";
 import type { AppContext, AuditActor, AuthContext, Bindings } from "./api-context";
 import { AppError } from "./app-error";
-import { clampNumber, createId, isoNow, parseJsonArray } from "./entity-utils";
+import { createId, isoNow, parseJsonArray } from "./entity-utils";
 import { workspaceInboxId } from "./notebook-service";
 import { sha256 } from "./hash-utils";
 import { getRequiredString } from "./mcp-json-rpc";
@@ -53,6 +53,8 @@ export type MemoMutationCommit = {
   after: (memoId: string) => PreparedStatementAdapter[];
 };
 
+const clampNumber = (value: number, min: number, max: number) =>
+  Number.isNaN(value) ? min : Math.min(Math.max(value, min), max);
 
 export type MemoDetailRow = MemoSummaryRow & {
   content_json: string;
